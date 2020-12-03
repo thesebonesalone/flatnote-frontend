@@ -50,7 +50,7 @@ class Notes extends Component {
     return (
       <div className="main-title">
         {this.props.user.username === "" ? <Redirect push to="/" /> : null}
-        <h2>{`${this.props.user.username}'s Notes`}</h2>
+        <h1>{`${this.props.user.username}'s Notes`}</h1>
         <input
           type="text"
           placeholder="search notes"
