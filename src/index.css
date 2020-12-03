@@ -24,7 +24,9 @@ code {
 }
 .active:hover {
   color: white;
+  text-decoration: underline;
   opacity: 1;
+  cursor: pointer;
 }
 .main-title {
   text-align: center;
@@ -40,5 +42,36 @@ code {
 }
 .faux-link:hover {
   color: blue;
-  text-decoration: underline;
+}
+.card {
+  background-color: rgb(230, 234, 236);
+}
+
+.slide {
+  width: 100%;
+  
+}
+.slideshow-div{
+  position: relative;
+  text-align: center;
+  color: white;
+  background-size: contain;
+  width: 95%;
+  margin: 20px;
+}
+
+.centered {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  font-family: Tahoma;
+  font-size: 50px;
+}
+
+.home-page {
+  width: 75%;
+}
+
+.login-col {
+  margin: 20px;
 }

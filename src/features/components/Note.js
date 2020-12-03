@@ -81,18 +81,18 @@ class Note extends Component {
       <div>
         <p>Are you sure you want to delete?</p>
         <p>
-          <div
+          <button
             onClick={(e) => this.handleDelete(e)}
             className="btn btn-outline-primary"
           >
             Cancel
-          </div>
-          <div
+          </button>
+          <button
             onClick={(e) => this.deleteSelf(e)}
             className="btn btn-outline-danger"
           >
             Delete
-          </div>
+          </button>
         </p>
       </div>
     );
@@ -120,20 +120,25 @@ class Note extends Component {
       return (
         <div className="row" style={{ margin: "20px" }}>
           <div className="card" style={{ width: "100%", height: "auto" }}>
+            <h5 className="card-header">{this.props.info.title}</h5>
             <div className="card-body">
-              <h5 className="card-title">{this.props.info.title}</h5>
-              <p> Date Created: {this.parseDate()}</p>
+              <p className="card-subtitle mb-2 text-muted">
+                {" "}
+                Date Created: {this.parseDate()}
+              </p>
               <p>
                 {this.state.expand
                   ? this.props.info.content
                   : this.renderHalfContent()}
                 {this.props.info.content.length > 256 ? (
-                  <a
-                    className="btn btn-primary"
-                    onClick={() => this.handleExpand()}
-                  >
-                    {this.state.expand ? "Hide" : "Show All"}
-                  </a>
+                  <p>
+                    <a
+                      className="btn btn-primary"
+                      onClick={() => this.handleExpand()}
+                    >
+                      {this.state.expand ? "Hide" : "Show All"}
+                    </a>
+                  </p>
                 ) : null}
               </p>
               {this.state.confirm ? this.renderConfirm() : this.renderEdit()}

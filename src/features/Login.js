@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Redirect } from "react-router-dom";
+import SlideShow from "./Slideshow";
 
 class Login extends Component {
   constructor(props) {
@@ -8,8 +9,40 @@ class Login extends Component {
     this.state = {
       username: "",
       new_username: "",
+      currentImage: 0,
+      opacity: 1,
     };
   }
+
+  changeImage = () => {
+    let newCurrentImage = this.state.currentImage;
+    newCurrentImage += 1;
+    if (newCurrentImage === 4) {
+      newCurrentImage = 0;
+    }
+    this.setState({
+      currentImage: newCurrentImage,
+    });
+    this.setState({
+      opacity: 0,
+    });
+    setTimeout(() => this.incrementOpacity(), 16.66);
+  };
+
+  incrementOpacity() {
+    if (this.state.opacity <= 1) {
+      let newOpacity = this.state.opacity;
+      this.setState({
+        opacity: newOpacity + 0.02,
+      });
+      setTimeout(() => this.incrementOpacity(), 16.66);
+    }
+  }
+
+  componentDidMount() {
+    setInterval(() => this.changeImage(), 6000);
+  }
+
   handleChange = (e) => {
     if (e.target.name === "username") {
       this.setState({
@@ -27,13 +60,16 @@ class Login extends Component {
     fetch(`http://localhost:3000/users/${this.state.username}`)
       .then((resp) => resp.json())
       .then((user) => {
-          //debugger
-        console.log(user[0]);
-        this.props.changeUser(user[0]);
+        if (user.length > 0) {
+          this.props.changeUser(user[0]);
+        } else {
+          alert("This user does not exist!");
+        }
       });
   };
   handleCreate = (e) => {
     e.preventDefault();
+    //debugger
     let data = { user: { username: this.state.new_username } };
     let reqObj = {
       method: "POST",
@@ -45,45 +81,50 @@ class Login extends Component {
     fetch("http://localhost:3000/users", reqObj)
       .then((resp) => resp.json())
       .then((user) => {
-          debugger
-        this.props.changeUser(user);
+        if (user.message === "Success") {
+          this.props.changeUser(user.user);
+        } else {
+          alert("Unable to create User");
+        }
       });
   };
 
   render() {
     return (
-      <div className="main-title">
+      <div className="main-title card">
         {this.props.user.id !== null ? <Redirect push to="/notes" /> : null}
-        <h2>Welcome to FlatNotes!</h2>
-        <div className="container login">
-          <div>
-            <div className="login-row">
+        <SlideShow
+          currentImage={this.state.currentImage}
+          alpha={this.state.opacity}
+        />
+        <div className="container">
+          <div className="row">
+            <div className="col login-col">
+              Already a user?
               <form onSubmit={(e) => this.handleSubmit(e)}>
                 <input
+                className="login-col"
                   type="text"
                   name="username"
                   placeholder="username"
                   onChange={(e) => this.handleChange(e)}
                 ></input>
-                <button type="submit" name="submit">
+                <button type="submit" name="submit" className="btn btn-primary">
                   Log In
                 </button>
               </form>
             </div>
-          </div>
-          <div>
-            <div className="login-row">Not a User Yet?</div>
-          </div>
-          <div>
-            <div className="login-row">
+            <div className="col login-col">
+              Not a User Yet?
               <form onSubmit={(e) => this.handleCreate(e)}>
                 <input
+                className="login-col"
                   type="text"
                   name="new_username"
                   placeholder="new username"
                   onChange={(e) => this.handleChange(e)}
                 ></input>
-                <button type="submit" name="submit">
+                <button type="submit" name="submit" className="btn btn-primary">
                   Create User
                 </button>
               </form>

@@ -5243,6 +5243,11 @@
     "locate-path" "^5.0.0"
     "path-exists" "^4.0.0"
 
+"fitty@^2.3.3":
+  "integrity" "sha512-JBrXkAT29fGTMFA/O40zzxZTISK5qm4kx8gRU6x43a1OalC5kyVXG77RLbyFMFdFabd16nYX3HrRAe/hGKg+EQ=="
+  "resolved" "https://registry.npmjs.org/fitty/-/fitty-2.3.3.tgz"
+  "version" "2.3.3"
+
 "flat-cache@^2.0.1":
   "integrity" "sha512-LoQe6yDuUMDzQAEH8sgmh4Md6oZnc/7PjtwjNFSzveXqSHt6ka9fPBuso7IGf9Rz4uqnSnWiFH2B/zj24a5ReA=="
   "resolved" "https://registry.yarnpkg.com/flat-cache/-/flat-cache-2.0.1.tgz"

@@ -1,23 +1,24 @@
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
-import App from "./App";
 import NavBar from "./features/NavBar";
 import Notes from "./features/Notes";
 import NotesForm from "./features/NotesForm";
 import Login from "./features/Login";
 import { createStore } from "redux";
 import { Provider } from "react-redux";
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 //import * as serviceWorker from './serviceWorker';
 
 const reducer = (
-  state = { user: { username: "", id: null }, edit: null },
+  state = { user: { username: "", id: null }, edit: null ,},
   action
 ) => {
   switch (action.type) {
     case "CHANGE_USER":
       return { ...state, user: action.user };
+    case "REMOVE_USER":
+      return { ...state, user: { username: "", id: null } };
     case "FILL_EDIT_ID":
       return { ...state, edit: action.editId };
     case "REMOVE_EDIT_ID":
@@ -39,7 +40,7 @@ ReactDOM.render(
   <Router>
     <Provider store={store}>
       <NavBar />
-      <div className="container">
+      <div className="container home-page">
         <div className="row"></div>
         <Switch>
           <Route path="/notes/new">
@@ -60,8 +61,3 @@ ReactDOM.render(
   </Router>,
   document.getElementById("root")
 );
-
-// If you want your app to work offline and load faster, you can change
-// unregister() to register() below. Note this comes with some pitfalls.
-// Learn more about service workers: https://bit.ly/CRA-PWA
-//serviceWorker.unregister();

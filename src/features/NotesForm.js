@@ -60,10 +60,13 @@ class NotesForm extends Component {
     fetch("http://localhost:3000/notes", reqObj)
       .then((resp) => resp.json())
       .then((note) => {
-        this.props.changeEdit(note.id);
-        this.setState({
-          redirect: true,
-        });
+        if (note.message === "Success"){
+          this.setState({
+            redirect: true,
+          });
+        } else {
+          alert("Unable to create Note")
+        }
       });
   };
 
@@ -85,10 +88,13 @@ class NotesForm extends Component {
     fetch(`http://localhost:3000/notes/${this.props.edit}`, reqObj)
       .then((resp) => resp.json())
       .then((note) => {
-        console.log(note);
+        if (note.message === "Success"){
         this.setState({
           redirect: true,
         });
+      } else {
+        alert("Unable to create Note")
+      }
       });
   };
 
@@ -118,7 +124,7 @@ class NotesForm extends Component {
             placeholder="Take your notes here..."
             onChange={(e) => this.handleChange(e)}
           />
-          <button type="submit" name="submit">
+          <button type="submit" name="submit" className="btn btn-outline-primary">
             {this.props.edit ? "Save Note" : "Create Note"}
           </button>
         </form>

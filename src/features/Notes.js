@@ -8,6 +8,7 @@ class Notes extends Component {
     super(props);
     this.state = {
       notes: [],
+      filter: "",
     };
   }
 
@@ -22,7 +23,13 @@ class Notes extends Component {
   }
 
   renderNotes() {
-    return this.state.notes.map((note) => {
+    let filteredNotes = this.state.notes.filter((note) => {
+      return (
+        note.title.includes(this.state.filter) ||
+        note.content.includes(this.state.filter)
+      );
+    });
+    return filteredNotes.map((note) => {
       return <Note key={note.id} info={note} />;
     });
   }
@@ -32,12 +39,23 @@ class Notes extends Component {
     this.props.removeEditId();
   }
 
+  handleChange = (e) => {
+    this.setState({
+      filter: e.target.value,
+    });
+  };
+
   render() {
     //debugger
     return (
       <div className="main-title">
         {this.props.user.username === "" ? <Redirect push to="/" /> : null}
         <h2>{`${this.props.user.username}'s Notes`}</h2>
+        <input
+          type="text"
+          placeholder="search notes"
+          onChange={(e) => this.handleChange(e)}
+        />
         <div>{this.renderNotes()}</div>
         <Link to="/notes/new" onClick={(e) => this.handleNewClick(e)}>
           Create New Note
