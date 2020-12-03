@@ -8,7 +8,7 @@ class NotesForm extends Component {
     this.state = {
       title: "",
       content: "",
-      redirect: false
+      redirect: false,
     };
   }
 
@@ -25,7 +25,7 @@ class NotesForm extends Component {
     if (this.props.edit) {
       this.handleEdit();
     } else {
-      this.handleCreate()
+      this.handleCreate();
     }
   };
 
@@ -43,7 +43,13 @@ class NotesForm extends Component {
   }
 
   handleCreate = () => {
-    let data = { note: { title: this.state.title, content: this.state.content, user_id: this.props.user.id } };
+    let data = {
+      note: {
+        title: this.state.title,
+        content: this.state.content,
+        user_id: this.props.user.id,
+      },
+    };
     let reqObj = {
       method: "POST",
       headers: {
@@ -54,15 +60,21 @@ class NotesForm extends Component {
     fetch("http://localhost:3000/notes", reqObj)
       .then((resp) => resp.json())
       .then((note) => {
-        this.props.changeEdit(note.id)
+        this.props.changeEdit(note.id);
         this.setState({
-            redirect: true
-        })
+          redirect: true,
+        });
       });
   };
 
   handleEdit = () => {
-    let data = { note: { title: this.state.title, content: this.state.content, user_id: this.props.user.id } };
+    let data = {
+      note: {
+        title: this.state.title,
+        content: this.state.content,
+        user_id: this.props.user.id,
+      },
+    };
     let reqObj = {
       method: "PATCH",
       headers: {
@@ -73,12 +85,12 @@ class NotesForm extends Component {
     fetch(`http://localhost:3000/notes/${this.props.edit}`, reqObj)
       .then((resp) => resp.json())
       .then((note) => {
-          console.log(note)
+        console.log(note);
         this.setState({
-            redirect: true
-        })
+          redirect: true,
+        });
       });
-  }
+  };
 
   render() {
     return (
@@ -87,7 +99,7 @@ class NotesForm extends Component {
           {this.props.edit ? "Edit Notes" : "Take New Notes"}
         </h2>
         {this.props.user.username === "" ? <Redirect push to="/" /> : null}
-        {this.state.redirect ? <Redirect push to="/notes"/> : null}
+        {this.state.redirect ? <Redirect push to="/notes" /> : null}
         <form onSubmit={(e) => this.handleSubmit(e)}>
           <input
             type="text"
@@ -107,7 +119,7 @@ class NotesForm extends Component {
             onChange={(e) => this.handleChange(e)}
           />
           <button type="submit" name="submit">
-            { this.props.edit ? "Save Note" : "Create Note"}
+            {this.props.edit ? "Save Note" : "Create Note"}
           </button>
         </form>
       </div>

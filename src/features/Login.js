@@ -27,6 +27,7 @@ class Login extends Component {
     fetch(`http://localhost:3000/users/${this.state.username}`)
       .then((resp) => resp.json())
       .then((user) => {
+          //debugger
         console.log(user[0]);
         this.props.changeUser(user[0]);
       });
@@ -44,6 +45,7 @@ class Login extends Component {
     fetch("http://localhost:3000/users", reqObj)
       .then((resp) => resp.json())
       .then((user) => {
+          debugger
         this.props.changeUser(user);
       });
   };
