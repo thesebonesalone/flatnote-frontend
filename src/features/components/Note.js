@@ -113,6 +113,14 @@ class Note extends Component {
     });
   }
 
+  renderRichContent() {
+    let splitContent = this.props.info.content.split("\n");
+
+    return splitContent.map((line) => {
+      return <p>{line}</p>;
+    });
+  }
+
   render() {
     if (this.state.hidden) {
       return null;
@@ -126,21 +134,17 @@ class Note extends Component {
                 {" "}
                 Date Created: {this.parseDate()}
               </p>
-              <p>
-                {this.state.expand
-                  ? this.props.info.content
-                  : this.renderHalfContent()}
-                {this.props.info.content.length > 256 ? (
-                  <p>
-                    <a
-                      className="btn btn-primary"
-                      onClick={() => this.handleExpand()}
-                    >
-                      {this.state.expand ? "Hide" : "Show All"}
-                    </a>
-                  </p>
-                ) : null}
-              </p>
+              <div>
+                <div className="note-content">
+                  {this.state.expand
+                    ? this.renderRichContent()
+                    : this.renderHalfContent()}
+                  
+                </div>
+              </div>
+                {this.props.info.content.length > 256 ? <div className="btn btn-primary"
+                onClick={() => this.handleExpand()}>{this.state.expand ? "Hide" : "Show All"} </div>: null}
+               
               {this.state.confirm ? this.renderConfirm() : this.renderEdit()}
             </div>
           </div>

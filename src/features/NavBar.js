@@ -10,7 +10,7 @@ class NavBar extends Component {
     return (
       <nav className="navbar navbar-expand-lg navbar-light">
         {/* <img src={require("../assets/logo192.png")} alt="flatnote logo"/> */}
-        <h5 className="navbar-brand large-text"><color style={{color: 'rgb(189, 28, 16)'}}>Flat</color><color style={{color: 'white'}}>Note</color></h5>
+        <h5 className="big-div large-text"><color style={{color: 'rgb(189, 28, 16)'}}>Flat</color><color style={{color: 'white'}}>Note</color></h5>
         <div className="collapse navbar-collapse" id="navbarSupportedContent"></div>
         {this.props.user.id ? (<ul className="navbar-nav mr-auto">
           

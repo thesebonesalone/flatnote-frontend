@@ -9,6 +9,9 @@ class Login extends Component {
     this.state = {
       username: "",
       new_username: "",
+      password: '',
+      new_password: '',
+      confirm_password: '',
       currentImage: 0,
       opacity: 1,
     };
@@ -49,6 +52,21 @@ class Login extends Component {
         username: e.target.value,
       });
     }
+    if (e.target.name === "password") {
+      this.setState({
+        password: e.target.value,
+      });
+    }
+    if (e.target.name === "new_password") {
+      this.setState({
+        new_password: e.target.value,
+      });
+    }
+    if (e.target.name === "confirm_password") {
+      this.setState({
+        confirm_password: e.target.value,
+      });
+    }
     if (e.target.name === "new_username") {
       this.setState({
         new_username: e.target.value,
@@ -57,20 +75,34 @@ class Login extends Component {
   };
   handleSubmit = (e) => {
     e.preventDefault();
-    fetch(`http://localhost:3000/users/${this.state.username}`)
+    let data = {
+      username: this.state.username,
+      password: this.state.password
+    }
+
+    let reqObj = {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify(data)
+    }
+
+    fetch(`http://localhost:3000/auth`,reqObj)
       .then((resp) => resp.json())
       .then((user) => {
-        if (user.length > 0) {
-          this.props.changeUser(user[0]);
+        console.log(user)
+        if (user.message === "Success"){
+          this.props.changeUser({username: user.username, id: user.id})
         } else {
-          alert("This user does not exist!");
+          alert(user.message)
         }
       });
   };
   handleCreate = (e) => {
     e.preventDefault();
     //debugger
-    let data = { user: { username: this.state.new_username } };
+    let data = { user: { username: this.state.new_username, password: this.state.new_password } };
     let reqObj = {
       method: "POST",
       headers: {
@@ -81,6 +113,7 @@ class Login extends Component {
     fetch("http://localhost:3000/users", reqObj)
       .then((resp) => resp.json())
       .then((user) => {
+        console.log(user)
         if (user.message === "Success") {
           this.props.changeUser(user.user);
         } else {
@@ -92,6 +125,7 @@ class Login extends Component {
   render() {
     return (
       <div className="main-title card">
+        <h5 className="navbar-brand large-text"><color style={{color: 'rgb(189, 28, 16)'}}>Flat</color><color style={{color: 'white'}}>Note</color></h5>
         {this.props.user.id !== null ? <Redirect push to="/notes" /> : null}
         <SlideShow
           currentImage={this.state.currentImage}
@@ -99,8 +133,8 @@ class Login extends Component {
         />
         <div className="container">
           <div className="row">
-            <div className="col login-col">
-              Already a user?
+            <div className="col login-col card">
+              <h3>Login</h3>
               <form onSubmit={(e) => this.handleSubmit(e)}>
                 <input
                 className="login-col"
@@ -109,21 +143,44 @@ class Login extends Component {
                   placeholder="username"
                   onChange={(e) => this.handleChange(e)}
                 ></input>
+                <input
+                className="login-col"
+                  type="password"
+                  name="password"
+                  placeholder="password"
+                  onChange={(e) => this.handleChange(e)}
+                ></input><br></br>
                 <button type="submit" name="submit" className="btn btn-primary">
                   Log In
                 </button>
               </form>
             </div>
-            <div className="col login-col">
-              Not a User Yet?
+            <div className="col login-col card">
+              <h3>Sign Up</h3>
               <form onSubmit={(e) => this.handleCreate(e)}>
                 <input
-                className="login-col"
+                className=""
                   type="text"
                   name="new_username"
                   placeholder="new username"
                   onChange={(e) => this.handleChange(e)}
                 ></input>
+                <br/>
+                <input
+                className=""
+                  type="password"
+                  name="new_password"
+                  placeholder="password"
+                  onChange={(e) => this.handleChange(e)}
+                ></input>
+                <br/>
+                <input
+                className=""
+                  type="password"
+                  name="confirm_password"
+                  placeholder="confirm password"
+                  onChange={(e) => this.handleChange(e)}
+                ></input><br/>
                 <button type="submit" name="submit" className="btn btn-primary">
                   Create User
                 </button>

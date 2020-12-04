@@ -80,3 +80,11 @@ code {
 .large-text {
   font-size: 45px;
 }
+.big-div {
+  width: 100%;
+  background-color: rgb(80, 116, 148);
+}
+
+.note-content {
+  text-align: left;
+}

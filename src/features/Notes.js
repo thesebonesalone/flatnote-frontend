@@ -16,7 +16,9 @@ class Notes extends Component {
     fetch(`http://localhost:3000/users/${this.props.user.username}/notes`)
       .then((resp) => resp.json())
       .then((notes) => {
+        //debugger
         this.setState({
+          
           notes: notes,
         });
       });
