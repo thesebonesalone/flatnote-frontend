@@ -9,7 +9,12 @@ class Note extends Component {
       hidden: false,
       expand: false,
       confirm: false,
+      xPos: 100,
     };
+  }
+  componentDidMount(){
+    
+    setTimeout(() => this.changePos(), 20);
   }
   parseDate = () => {
     let date = this.props.info.created_at.split("T")[0];
@@ -33,6 +38,18 @@ class Note extends Component {
     }`;
     return newString;
   };
+  changePos = () => {
+    let newXPos = this.state.xPos;
+    newXPos = newXPos - newXPos / 5;
+    if (newXPos < 0.01) {
+      newXPos = 0;
+    } else {
+      setTimeout(() => this.changePos(), 20);
+    }
+    this.setState({
+      xPos: newXPos,
+    });
+  }
 
   handleClick = (e) => {
     this.props.changeEdit(this.props.info.id);
@@ -63,7 +80,7 @@ class Note extends Component {
     );
   }
   deleteSelf() {
-    fetch(`http://localhost:3000/notes/${this.props.info.id}`, {
+    fetch(`http://localhost:3001/notes/${this.props.info.id}`, {
       method: "DELETE",
     })
       .then((resp) => resp.json())
@@ -126,8 +143,8 @@ class Note extends Component {
       return null;
     } else {
       return (
-        <div className="row" style={{ margin: "20px" }}>
-          <div className="card" style={{ width: "100%", height: "auto" }}>
+        <div className="row" style={{margin: "20px", opacity: `${(100 - this.state.xPos) / 100}`, position: 'relative', right: `${this.state.xPos * 2}%`}}>
+          <div className="card rounded" style={{width: '100%', height: "auto",}} >
             <h5 className="card-header">{this.props.info.title}</h5>
             <div className="card-body">
               <p className="card-subtitle mb-2 text-muted">

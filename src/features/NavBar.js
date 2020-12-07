@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { connect } from "react-redux";
 import { Link } from "react-router-dom";
+import GoogleLogoutButton from "./components/GoogleLogoutButton";
 
 class NavBar extends Component {
   handleLogOut(e) {
@@ -16,13 +17,13 @@ class NavBar extends Component {
           
           <li className="nav-item active">
             
-              <a
+              {this.props.google ? <GoogleLogoutButton/> : <a
                 className="active faux-link"
                 onClick={(e) => this.handleLogOut(e)}
               >
                 {" "}
                 Logout
-              </a>
+              </a>}
           </li>
           <li className="nav-item active">
             <Link to="/notes" className="active">
@@ -41,7 +42,7 @@ class NavBar extends Component {
 }
 
 const mapStateToProps = (state) => {
-  return { user: state.user };
+  return { user: state.user, google: state.google };
 };
 
 const mapDispatchToProps = (dispatch) => {

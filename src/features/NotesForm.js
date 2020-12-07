@@ -31,7 +31,7 @@ class NotesForm extends Component {
 
   componentDidMount() {
     if (this.props.edit) {
-      fetch("http://localhost:3000/notes/" + this.props.edit)
+      fetch("http://localhost:3001/notes/" + this.props.edit)
         .then((resp) => resp.json())
         .then((note) =>
           this.setState({
@@ -57,10 +57,11 @@ class NotesForm extends Component {
       },
       body: JSON.stringify(data),
     };
-    fetch("http://localhost:3000/notes", reqObj)
+    fetch("http://localhost:3001/notes", reqObj)
       .then((resp) => resp.json())
       .then((note) => {
         if (note.message === "Success"){
+          this.props.addNoteToStore(note.note)
           this.setState({
             redirect: true,
           });
@@ -85,10 +86,13 @@ class NotesForm extends Component {
       },
       body: JSON.stringify(data),
     };
-    fetch(`http://localhost:3000/notes/${this.props.edit}`, reqObj)
+    fetch(`http://localhost:3001/notes/${this.props.edit}`, reqObj)
       .then((resp) => resp.json())
       .then((note) => {
+        debugger
         if (note.message === "Success"){
+        //this.props.addNoteToStore(note)
+        this.props.editNoteInStore(note.note)
         this.setState({
           redirect: true,
         });
@@ -139,6 +143,8 @@ const mapStateToProps = (state) => {
 
 const mapDispatchToProps = (dispatch) => {
   return {
+    editNoteInStore: (note) => dispatch({type: "EDIT_NOTE_IN_STORE", note: note}),
+    addNoteToStore: (note) => dispatch({ type: "ADD_NOTE_TO_STORE", note: note}),
     changeUser: (user) => dispatch({ type: "CHANGE_USER", user: user }),
     changeEdit: (editId) => dispatch({ type: "FILL_EDIT_ID", editId: editId }),
   };
